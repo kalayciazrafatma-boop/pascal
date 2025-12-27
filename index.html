@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pascal Üçgeni</title>
+    <style>
+        /* GÖRSELLİK (CSS) KISMI */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #222; /* Koyu arka plan */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #piramit-kutusu {
+            text-align: center; /* Piramidi ortalar */
+        }
+
+        .satir {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Sayılar arası boşluk */
+            margin-bottom: 10px; /* Satırlar arası boşluk */
+        }
+
+        .kutu {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Turuncu geçişli renk */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%; /* Yuvarlak yapar (kare istersen bu satırı sil) */
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            animation: belirme 0.5s ease-out forwards; /* Animasyon ekledik */
+            opacity: 0; /* Başlangıçta görünmez */
+        }
+
+        /* Animasyon Efekti */
+        @keyframes belirme {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="piramit-kutusu">
+        <!-- JavaScript buraya piramidi çizecek -->
+    </div>
+
+    <script>
+        // --- MANTIK (JAVASCRIPT) KISMI ---
+
+        // Python'daki recursive fonksiyonunun birebir aynısı
+        function pascal(n, k) {
+            if (k === 0 || k === n) {
+                return 1;
+            }
+            return pascal(n - 1, k - 1) + pascal(n - 1, k);
+        }
+
+        // Python'daki print_pascal_pyramid fonksiyonunun HTML üreten hali
+        function piramitOlustur(satirSayisi) {
+            const anaKutu = document.getElementById("piramit-kutusu");
+
+            for (let n = 0; n < satirSayisi; n++) {
+                // Yeni bir satır (div) oluştur
+                let satirDiv = document.createElement("div");
+                satirDiv.className = "satir";
+
+                for (let k = 0; k <= n; k++) {
+                    // Sayıyı hesapla
+                    let sayi = pascal(n, k);
+
+                    // Sayıyı içine koyacağımız kutuyu (span) oluştur
+                    let kutuSpan = document.createElement("span");
+                    kutuSpan.className = "kutu";
+                    kutuSpan.innerText = sayi;
+
+                    // Animasyonun sırayla gelmesi için gecikme ekle
+                    kutuSpan.style.animationDelay = `${(n * 0.2) + (k * 0.1)}s`;
+
+                    // Kutuyu satıra ekle
+                    satirDiv.appendChild(kutuSpan);
+                }
+                // Satırı ana kutuya ekle
+                anaKutu.appendChild(satirDiv);
+            }
+        }
+
+        // Fonksiyonu çalıştır (6 satır)
+        piramitOlustur(6);
+
+    </script>
+</body>
+</html>
